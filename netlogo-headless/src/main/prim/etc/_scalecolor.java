@@ -2,14 +2,17 @@
 
 package org.nlogo.prim.etc;
 
-import org.nlogo.core.Pure;
+import org.nlogo.api.LogoException;
+import org.nlogo.core.Syntax;
 import org.nlogo.nvm.Context;
+import org.nlogo.core.Pure;
 import org.nlogo.nvm.Reporter;
 
 public final strictfp class _scalecolor extends Reporter implements Pure {
 
+
   @Override
-  public Object report(Context context) {
+  public Object report(Context context) throws LogoException {
     return report_1(context,
         argEvalDoubleValue(context, 0),
         argEvalDoubleValue(context, 1),
@@ -17,7 +20,8 @@ public final strictfp class _scalecolor extends Reporter implements Pure {
         argEvalDoubleValue(context, 3));
   }
 
-  public double report_1(Context context, double color, double var, double min, double max) {
+  public double report_1(Context context, double color, double var, double min, double max)
+      throws LogoException {
     // shade is irrelevant (i.e. black, white, and grey do same thing)
     color = org.nlogo.api.Color.findCentralColorNumber(color) - 5.0;
     double perc = 0.0;
@@ -35,7 +39,7 @@ public final strictfp class _scalecolor extends Reporter implements Pure {
     } else {
       if (var > max) {
         perc = 1.0;
-      } else if (var < min) {
+      } else if (var <= min) {
         perc = 0.0;
       } else {
         double tempval = var - min;
